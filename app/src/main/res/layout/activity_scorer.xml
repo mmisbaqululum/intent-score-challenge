@@ -16,6 +16,7 @@
         android:layout_marginTop="40dp"
         android:inputType="textPersonName"
         android:text="Scorer Name"
+        android:onClick="handleResult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
