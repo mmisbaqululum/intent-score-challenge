@@ -44,6 +44,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_logo" />
 
+    <TextView
+        android:id="@+id/txt_home_scorer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="home scorer"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_logo"
+        app:layout_constraintVertical_bias="1.0" />
+
     <Button
         android:id="@+id/btn_add_home"
         android:layout_width="match_parent"
@@ -87,6 +101,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/txt_away_scorer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="away scorer"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/score_away"
+        app:layout_constraintTop_toBottomOf="@+id/btn_add_away"
+        app:layout_constraintVertical_bias="0.164" />
+
+
+
     <Button
         android:id="@+id/btn_add_away"
         android:layout_width="match_parent"
@@ -107,6 +135,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

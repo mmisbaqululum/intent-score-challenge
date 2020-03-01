@@ -1,5 +1,6 @@
 package id.putraprima.skorbola;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,49 +12,61 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.io.IOException;
 
 public class MatchActivity extends AppCompatActivity {
+    private static final String STATUS_KEY = "status";
 
-    public static final String HOME_KEY = "home";
-    public static final String AWAY_KEY = "away";
-    public static final String HOME_SCORE_KEY = "home_score";
-    public static final String AWAY_SCORE_KEY = "away_score";
+//    public static final String HOME_KEY = "home";
+//    public static final String AWAY_KEY = "away";
+//    public static final String HOME_SCORE_KEY = "home_score";
+//    public static final String AWAY_SCORE_KEY = "away_score";
 
     private int homeScoreValue, awayScoreValue;
-
     private TextView homeText;
     private TextView awayText;
-    String homeName;
-    String awayName;
-
     private TextView homeScoreText;
     private TextView awayScoreText;
-
     private ImageView homeImage;
     private ImageView awayImage;
+    private Uri homeUri, awayUri;
+    public int homeScore = 0;
+    public int awayScore = 0;
+    private String name = "";
+    private TextView nameScorerHome, nameScorerAway;
+    private String returnString;
+    String homename;
+    String awayname;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match);
 
-        homeImage = findViewById(R.id.home_logo);
-        awayImage = findViewById(R.id.away_logo);
+
         homeText = findViewById(R.id.txt_home);
         awayText = findViewById(R.id.txt_away);
-
-
+        homeImage = findViewById(R.id.home_logo);
+        awayImage = findViewById(R.id.away_logo);
         homeScoreText = findViewById(R.id.score_home);
         awayScoreText = findViewById(R.id.score_away);
+        nameScorerHome = findViewById(R.id.txt_home_scorer);
+        nameScorerAway = findViewById(R.id.txt_away_scorer);
+
+
+
         Bundle extras = getIntent().getExtras();
         Uri imageHomeUri = Uri.parse(extras.getString("imageHome"));
         Uri imageAwayUri = Uri.parse(extras.getString("imageAway"));
         if (extras != null ){
-            String home = extras.getString(MainActivity.HOME_KEY);
-            String away = extras.getString(MainActivity.AWAY_KEY);
-            homeText.setText(home);
-            awayText.setText(away);
+            String homename = extras.getString(MainActivity.HOME_KEY);
+            String awayname = extras.getString(MainActivity.AWAY_KEY);
+
+            homeText.setText(homename);
+            awayText.setText(awayname);
             try {
                 Bitmap homeImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageHomeUri);
                 Bitmap awayImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageAwayUri);
@@ -75,36 +88,73 @@ public class MatchActivity extends AppCompatActivity {
 
 
     public void handleHomeScore(View view) {
+
+        Intent i = new Intent(this, ScorerActivity.class);
+        startActivityForResult(i, 1);
 //        homeScoreValue = Integer.valueOf(homeScoreText.getText().toString());
 //        homeScoreValue++;
 //        homeScoreText.setText(String.valueOf(homeScoreValue));
-        Intent intent = new Intent(this, ScorerActivity.class);
-        startActivityForResult(intent, HOME_ACTIVITY_REQUEST_CODE);
     }
 
 
     public void handleAwayScore(View view) {
+
+        Intent i = new Intent(this, ScorerActivity.class);
+        startActivityForResult(i, 2);
+
 //        awayScoreValue = Integer.valueOf(awayScoreText.getText().toString());
 //        awayScoreValue++;
 //        awayScoreText.setText(String.valueOf(awayScoreValue));
-        Intent intent = new Intent(this, ScorerActivity.class);
-        startActivityForResult(intent, HOME_ACTIVITY_REQUEST_CODE);
     }
 
 
     public void handleResult(View view) {
-        Intent i = new Intent(MatchActivity.this, ResultActivity.class);
-        i.putExtra("homename", homeName);
-        i.putExtra("awayname", awayName);
+        Intent intent = new Intent(this,ResultActivity.class);
+        intent.putExtra("homename", homename);
+        intent.putExtra("awayText", awayname);
+        intent.putExtra("homeScoreText",homeScoreValue);
+        intent.putExtra("awayScoreText",awayScoreValue);
+        startActivity(intent);
+
+    }
 
 
-        if (homeScoreValue > awayScoreValue){
-            i.putExtra("End game", "The Winner is" + homeText.getText().toString());
-        } else if (homeScoreValue < awayScoreValue) {
-            i.putExtra("End game", "The Winner is" + awayText.getText().toString());
-        } else {
-            i.putExtra("End game", "Draw");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+            if (resultCode == RESULT_OK) {
+                homeScore++;
+                homeScoreText.setText(String.valueOf(homeScore));
+
+                returnString = data.getStringExtra("scorerName");
+                name = returnString + "\n"+nameScorerHome.getText().toString();
+                nameScorerHome.setText(name);
+            }
+        }else if (requestCode == 2){
+            if (resultCode == RESULT_OK) {
+                awayScore++;
+                awayScoreText.setText(String.valueOf(awayScore));
+
+                returnString = data.getStringExtra("scorerName");
+                name = returnString + "\n"+nameScorerAway.getText().toString();
+                nameScorerAway.setText(name);
+            }
         }
+    }
+
+    public void handleCek(View view) {
+        String status = null;
+        if (homeScore == awayScore ){
+            status = "Name of Winning Draw";
+        }else if (homeScore > awayScore){
+            status = "Name of Winning :"+homeText.getText().toString()+"\n Scorer Name : \n"+nameScorerHome.getText().toString();
+        }else if (homeScore < awayScore){
+            status = "Name of Winning :"+awayText.getText().toString()+"\n Scorer Name : \n"+nameScorerAway.getText().toString();
+        }
+        Intent i = new Intent(this, ResultActivity.class);
+        i.putExtra(STATUS_KEY, status);
         startActivity(i);
     }
+    
 }

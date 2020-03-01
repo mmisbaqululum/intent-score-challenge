@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView homeLogo;
     private ImageView awayLogo;
-
     private EditText homeTeam;
     private EditText awayTeam;
 
