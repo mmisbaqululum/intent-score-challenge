@@ -144,17 +144,17 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     public void handleCek(View view) {
-        String status = null;
-        if (homeScore == awayScore ){
-            status = "Name of Winning Draw";
-        }else if (homeScore > awayScore){
-            status = "Name of Winning :"+homeText.getText().toString()+"\n Scorer Name : \n"+nameScorerHome.getText().toString();
-        }else if (homeScore < awayScore){
-            status = "Name of Winning :"+awayText.getText().toString()+"\n Scorer Name : \n"+nameScorerAway.getText().toString();
-        }
         Intent i = new Intent(this, ResultActivity.class);
-        i.putExtra(STATUS_KEY, status);
+//        String status = null;
+//        i.putExtra(STATUS_KEY, status);
+        if (homeScore == awayScore ){
+            i.putExtra(STATUS_KEY, "Draw");
+        }else if (homeScore > awayScore){
+            i.putExtra(STATUS_KEY,"Name of Winning :"+homeText.getText().toString()+"\n Scorer Name : \n"+nameScorerHome.getText().toString());
+        }else if (homeScore < awayScore) {
+            i.putExtra(STATUS_KEY, "Name of Winning :" + awayText.getText().toString() + "\n Scorer Name : \n" + nameScorerAway.getText().toString());
+        }
         startActivity(i);
     }
-    
+
 }
