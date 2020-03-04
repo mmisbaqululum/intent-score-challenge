@@ -108,15 +108,15 @@ public class MatchActivity extends AppCompatActivity {
     }
 
 
-    public void handleResult(View view) {
-        Intent intent = new Intent(this,ResultActivity.class);
-        intent.putExtra("homename", homename);
-        intent.putExtra("awayText", awayname);
-        intent.putExtra("homeScoreText",homeScoreValue);
-        intent.putExtra("awayScoreText",awayScoreValue);
-        startActivity(intent);
-
-    }
+//    public void handleResult(View view) {
+//        Intent intent = new Intent(this,ResultActivity.class);
+//        intent.putExtra("homename", homename);
+//        intent.putExtra("awayText", awayname);
+//        intent.putExtra("homeScoreText",homeScoreValue);
+//        intent.putExtra("awayScoreText",awayScoreValue);
+//        startActivity(intent);
+//
+//    }
 
 
     @Override

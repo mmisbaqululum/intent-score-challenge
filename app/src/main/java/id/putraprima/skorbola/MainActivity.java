@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView homeLogo;
     private ImageView awayLogo;
+
     private EditText homeTeam;
     private EditText awayTeam;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         homeTeam = findViewById(R.id.home_team);
         awayTeam = findViewById(R.id.away_team);
+
         homeLogo = findViewById(R.id.home_logo);
         awayLogo = findViewById(R.id.away_logo);
 
@@ -55,20 +57,27 @@ public class MainActivity extends AppCompatActivity {
     //2. Validasi Input Away Team
 
     public void handleNext(View view) {
-        if(homeTeam.equals("") && awayTeam.equals("")){
-            Toast.makeText(getApplicationContext(), "Isi Team Terlebih dahulu", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            String home = homeTeam.getText().toString();
-            String away = awayTeam.getText().toString();
-            String imageHome = homeUri.toString();
-            String imageAway = awayUri.toString();
-            Intent intent = new Intent(this, MatchActivity.class);
-            intent.putExtra(HOME_KEY, home); //memanggil data
-            intent.putExtra(AWAY_KEY, away);
-            intent.putExtra(IMAGEHOME_KEY, imageHome);
-            intent.putExtra(IMAGEAWAY_KEY, imageAway);
-            startActivity(intent);
+        String homeName = homeTeam.getText().toString();
+        String awayName = awayTeam.getText().toString();
+
+        Intent i = new Intent(this, MatchActivity.class);
+
+        if (homeName.isEmpty()){
+            homeTeam.setError("Isi Nama HomeTeam dahulu");
+        }else if (awayName.isEmpty()){
+            awayTeam.setError("Isi Nama AwayTeam dahulu");
+        }else if (homeUri == null){
+            Toast.makeText(this, "Pilih gambar dahulu", Toast.LENGTH_SHORT).show();
+            handleImageHome(view);
+        }else if ( awayUri == null){
+            Toast.makeText(this, "Pilih gambar dahulu", Toast.LENGTH_SHORT).show();
+            handleImageAway(view);
+        }else {
+            i.putExtra(HOME_KEY, homeName);
+            i.putExtra(AWAY_KEY, awayName);
+            i.putExtra(IMAGEHOME_KEY, homeUri.toString());
+            i.putExtra(IMAGEAWAY_KEY, awayUri.toString());
+            startActivity(i);
         }
     }
     //3. Ganti Logo Home Team
